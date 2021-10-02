@@ -11,7 +11,7 @@
        <option value="not-completed">Не завершенные</option>
      </select>
      <p>Осталось выполнить {{ todosCount }} задач:</p>
-    <Loader v-if="presentLoading"/>
+    <Loader class="loader" v-if="presentLoading"/>
     <TodoList
       v-else-if="filteredTodos.length"
       v-bind:todos="filteredTodos"

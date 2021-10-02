@@ -2,12 +2,12 @@
   <div>
     <h2 class="page__title">Новости</h2>
     <NavList />
-    <Loader v-if="loading"/>
+    <Loader class="loader" v-if="presentLoading"/>
     <NewsList 
     v-else-if="allNews.length"
     v-bind:news='allNews'
      />
-    <p v-else>No news!</p>
+    <p v-else>Нет новостей.</p>
   </div>
 </template>
 
@@ -19,7 +19,7 @@ import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'news',
-  computed: mapGetters(['allNews', 'newsCount']),
+  computed: mapGetters(['allNews', 'newsCount','presentLoading']),
   methods: mapActions(['fetchNews']),
   components: {
     NewsList,
@@ -32,3 +32,12 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.loader {
+  height: 50vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>

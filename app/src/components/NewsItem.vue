@@ -1,9 +1,12 @@
 <template>
-  <li>
-      <h3>{{ news.title }}</h3>
-      <img :src="news.urlToImage"  alt="">
-      <p>{{ news.content }}</p>
-      <p>{{ news.author }}</p>
+  <li class="news__item">
+      <span class="news__image">
+        <img class="news__img" :src="news.urlToImage">
+      </span>
+      <h3 class="news__title">{{ news.title }}</h3>
+      <p class="news__description">{{ news.content }}</p>
+      <p class="news__src">{{ news.author }}</p>
+      <a class="news__link" :href="news.url" target_blank>Перейти к новости</a>
   </li>
 </template>
 
@@ -20,54 +23,52 @@ export default {
 </script>
 
 <style scoped>
-  li {
-    width: 25%;
-    padding: 0.5rem 2rem;
-    margin: 0 auto 1rem;
+  .news__item {
+    width: 40%;
+    padding: 2rem 2rem;
+    margin: 0 auto 3rem;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.3), 0px 4px 50px rgba(0, 0, 0, 0.25);
   }
-
-  span {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-right: 1rem;
-  }
-
-  input {
-    margin-right: 2rem;
-  }
-
-  strong {
+  
+  .news__image {
     display: block;
-    padding: 0.2em;
-    margin-right: 1rem;
-    border-radius: 50%;
+    width: 100%;
+    height: 250px;
+    margin: 0 auto 1rem;
+    background-size: cover;
+    overflow: hidden;
   }
 
-  h3 {
+  .news__img {
+    width: 100%;
+  }
+
+  .news__title {
     font-size: 1.5rem;
     text-align: center;
   }
 
-  p {
-    margin: 0;
+  .news__description {
+    margin: 0 0 15px 0;
     text-align: left;
   }
 
-  button {
-    color: #fff;
-    background-color: red;
-    border: none;
-    border-radius: 50%;
+  .news__src {
+    margin: 0 0 30px 0;
+    text-align: right;
   }
 
-  .done {
-    text-decoration: line-through;
-  }
-
-  img {
-    width: 90%;
-    height: auto;
-    margin: 0 auto 1rem;
+  .news__link {
+    display: block;
+    margin: 0 auto;
+    width: 50%;
+    padding: 1rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    color: #2c3e50;
+    background-color: #fff;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.3), 0px 4px 50px rgba(0, 0, 0, 0.25);
   }
 </style>

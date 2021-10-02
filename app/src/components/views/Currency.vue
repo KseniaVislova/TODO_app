@@ -2,16 +2,26 @@
   <div>
     <h2 class="page__title">Курс валют</h2>
     <NavList />
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deleniti at autem praesentium quas dolor nulla odio, exercitationem voluptate vel eligendi placeat iusto. Optio fugit, ducimus repellat repellendus temporibus natus commodi.</p>
+    <Loader class="loader" v-if="presentLoading"/>
+    <p v-else-if="allCurrency.length">{{ allCurrency.base }}</p>
+    <p v-else>Нет информации о курсе валюты</p>
   </div>
 </template>
 
 <script>
 import NavList from '@/components/NavList';
+import Loader from '@/components/Loader';
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
+  computed: mapGetters(['allCurrency','presentLoading']),
+  methods: mapActions(['fetchCurrency']),
   components: {
-    NavList
+    NavList,
+    Loader
   },
+  async mounted() {
+    this.fetchCurrency();
+  }
 }
 </script>

@@ -1,7 +1,6 @@
 <template>
   <form class="form" @submit.prevent="onSubmit">
     <input class="input__text" type="text" v-model="title">
-    <input class="input__date" type="date">
     <button type="submit">Create</button>
   </form>
 </template>

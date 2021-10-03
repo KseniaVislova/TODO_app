@@ -27,7 +27,6 @@ export default {
     NavList
   }, 
   async mounted() {
-    //this.$store.dispatch('fetchNews')
     this.fetchNews();
   }
 }

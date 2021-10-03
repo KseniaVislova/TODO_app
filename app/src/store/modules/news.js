@@ -1,3 +1,6 @@
+import { newsCollection } from '@/firebase'
+import { getDocs } from "firebase/firestore";
+
 export default ({
   state: {
     news: [],
@@ -24,12 +27,22 @@ export default ({
   },
   actions: {
     async fetchNews(ctx) {
-      const res = await fetch('https://newsapi.org/v2/everything?q=tesla&from=2021-09-02&sortBy=publishedAt&apiKey=653d985befbc4b80bc2fb9eddb79b870');
-      const news = await res.json();
-      const loading = false;
+      const news = [];
+      
+      try {
+        const querySnapshot = await getDocs(newsCollection);
 
-      ctx.commit('updateNews', news.articles)
-      ctx.commit('updateLoading', loading)
+        querySnapshot.forEach((doc) => {
+            news.push(doc.data())
+        })
+
+        const loading = false;
+        ctx.commit('updateNews', news)
+        ctx.commit('updateLoading', loading)
+      } catch (error) {
+        console.log(error.message)
+        throw error
+      }
     }
   },
-});
+})

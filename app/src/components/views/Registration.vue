@@ -82,7 +82,7 @@ export default {
   },
   methods: {
     onSubmit() {
-      createUser(this.form.email, this.form.password)
+      createUser(this.form.email, this.form.password, this.form.name)
       .then(function() {
         alert('Your account has been created')
         },

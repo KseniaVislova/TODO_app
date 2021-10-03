@@ -1,7 +1,7 @@
   import { initializeApp } from "firebase/app";
-  /*import { getFirestore, collection, addDoc } from "firebase/firestore";*/
+  import { getFirestore, collection, addDoc } from "firebase/firestore";
   import router from "./router";
-  import { getAuth, signInWithEmailAndPassword, /*signOut, */createUserWithEmailAndPassword } from "firebase/auth";
+  import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 
  const config = {
     apiKey: "AIzaSyDju36AW4Iilq7HQCBTTHACK0XS5lS4Q_o",
@@ -13,9 +13,11 @@
     measurementId: "G-TENNEWV87P"
   };
 
-  initializeApp(config)
-  /*const db = getFirestore(firebaseApp);
-  const usersCollection = collection(db, 'users');*/
+  const firebaseApp = initializeApp(config)
+  const db = getFirestore(firebaseApp);
+  const usersCollection = collection(db, 'users');
+  export const newsCollection = collection(db, 'news');
+  export const todosCollection = collection(db, 'todos');
 
   const auth = getAuth();
   /*const user = auth.currentUser;
@@ -27,6 +29,7 @@
     return createUserWithEmailAndPassword(auth, email, password)
     .then(
       function() {
+        addDoc(usersCollection, {email})
         router.push({ path: '/login' })
       })
   } 

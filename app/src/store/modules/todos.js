@@ -1,3 +1,6 @@
+import { todosCollection } from '@/firebase'
+import { getDocs } from "firebase/firestore";
+
 export default ({
   state: {
     todos: [],
@@ -51,14 +54,25 @@ export default ({
     },
   },
   actions: {
-    async fetchTodos(ctx, limit = 6) {
-      const res = await fetch('https://jsonplaceholder.typicode.com/todos?_limit=' + limit);
-      const todos = await res.json();
-      const loading = false;
+    async fetchTodos(ctx) {
+      const todos = [];
 
-      ctx.commit('updateTodos', todos)
-      ctx.commit('updateLoading', loading)
+      try {
+        const querySnapshot = await getDocs(todosCollection);
+
+        querySnapshot.forEach((doc) => {
+            todos.push(doc.data())
+        })
+
+        const loading = false;
+        ctx.commit('updateTodos', todos)
+        ctx.commit('updateLoading', loading)
+      } catch (error) {
+        console.log(error.message)
+        throw error
+      }
     },
+    
     updateTodo(ctx, id) {
       ctx.commit('updateTodos', id)
     }

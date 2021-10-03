@@ -4,9 +4,7 @@
         <img class="news__img" :src="news.urlToImage">
       </span>
       <h3 class="news__title">{{ news.title }}</h3>
-      <p class="news__description">{{ news.content }}</p>
-      <p class="news__src">{{ news.author }}</p>
-      <a class="news__link" :href="news.url" target_blank>Перейти к новости</a>
+      <p class="news__description">{{ news.body }}</p>
   </li>
 </template>
 

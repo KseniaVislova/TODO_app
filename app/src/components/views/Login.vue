@@ -47,6 +47,7 @@
 <script>
 import useVuelidate from '@vuelidate/core'
 import { required, email, minLength } from '@vuelidate/validators'
+import { signIn } from '@/firebase'
 
 export default {
   setup () {
@@ -58,6 +59,27 @@ export default {
         email: '',
         password: '',
       },
+    }
+  },
+  methods: {
+    onSubmit() {
+      signIn(this.form.email, this.form.password)
+      .then(function() {
+        alert('Вы успешно вошли в аккаунт')
+        },
+        function(error) {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          if (errorCode == 'auth/weak-password') {
+            alert('Неверный пароль');
+          } else {
+            alert(errorMessage);
+          }
+          console.log(error);
+        });
+      this.form.email = ''
+      this.form.password = ''
+      this.form.name = '' 
     }
   },
   validations() {

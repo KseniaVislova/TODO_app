@@ -65,11 +65,9 @@
 <script>
 import useVuelidate from '@vuelidate/core'
 import { required, email, minLength } from '@vuelidate/validators'
+import { createUser } from '@/firebase'
 
 export default {
-  setup () {
-    return { v$: useVuelidate() }
-  },
   data() {
     return {
       form: {
@@ -77,6 +75,30 @@ export default {
         password: '',
         name: '',
       },
+    }
+  },
+  setup () {
+    return { v$: useVuelidate() }
+  },
+  methods: {
+    onSubmit() {
+      createUser(this.form.email, this.form.password)
+      .then(function() {
+        alert('Your account has been created')
+        },
+        function(error) {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          if (errorCode == 'auth/weak-password') {
+            alert('The password is too weak.');
+          } else {
+            alert(errorMessage);
+          }
+          console.log(error);
+        });
+      this.form.email = ''
+      this.form.password = ''
+      this.form.name = '' 
     }
   },
   validations() {

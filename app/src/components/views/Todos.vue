@@ -57,7 +57,7 @@ export default {
     NavList
   },
   async mounted() {
-    this.fetchTodos(10);
+    this.fetchTodos();
   },
  /* methods: {
     removeTodo(id) {

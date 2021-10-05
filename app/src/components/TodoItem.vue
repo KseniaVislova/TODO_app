@@ -1,6 +1,6 @@
 <template>
   <li>
-    <span :class="{done:todo.completed}">
+    <span :class="{done:todo.completed}" :id="todo.id">
       <input type="checkbox" :checked="todo.completed" @change="updateStatus">
       <p>{{ todo.title }}</p>
     </span>
@@ -34,8 +34,10 @@ export default {
     },
     updateStatus() {
       this.$store.commit('updateCompleted', this.todo.id);
+      console.log(document.getElementById(this.todo.id))
+      document.getElementById(this.todo.id).classList.toggle('done')
     }
-  }
+  }, 
 }
 </script>
 

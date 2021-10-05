@@ -66,6 +66,7 @@
 import useVuelidate from '@vuelidate/core'
 import { required, email, minLength } from '@vuelidate/validators'
 import { createUser } from '@/firebase'
+import router from "@/router";
 
 export default {
   data() {
@@ -82,6 +83,7 @@ export default {
   },
   methods: {
     onSubmit() {
+        router.push({ path: '/login' })
       createUser(this.form.email, this.form.password, this.form.name)
       .then(function() {
         alert('Your account has been created')

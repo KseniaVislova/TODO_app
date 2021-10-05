@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import { getAuth, signOut } from "firebase/auth";
+
 export default {
   data: () => ({
     userInfo: null,
@@ -31,6 +33,12 @@ export default {
   }),
   methods: {
     logOut () {
+      const auth = getAuth();
+      signOut(auth).then(() => {
+        alert('Вы успешно вышли из аккаунта')
+      }).catch((error) => {
+        alert(error.message)
+      });
       this.$router.push('./login')
     },
     openDropdown() {

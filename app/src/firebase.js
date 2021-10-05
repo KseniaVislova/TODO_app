@@ -1,7 +1,7 @@
   import { initializeApp } from "firebase/app";
   import { getFirestore, collection, addDoc } from "firebase/firestore";
   import router from "./router";
-  import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+  import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword} from "firebase/auth";
 
  const config = {
     apiKey: "AIzaSyDju36AW4Iilq7HQCBTTHACK0XS5lS4Q_o",
@@ -14,22 +14,24 @@
   };
 
   const firebaseApp = initializeApp(config)
-  const db = getFirestore(firebaseApp);
-  const usersCollection = collection(db, 'users');
+  export const db = getFirestore(firebaseApp);
+  export const usersCollection = collection(db, 'users');
   export const newsCollection = collection(db, 'news');
   export const todosCollection = collection(db, 'todos');
 
-  const auth = getAuth();
-  /*const user = auth.currentUser;
-  if (user !== null) {
-    const displayName = user.displayName;
-  }*/
+  export const auth = getAuth();
 
-  export const createUser = (email, password) =>{
+  export const createUser = (email, password, name) =>{
     return createUserWithEmailAndPassword(auth, email, password)
     .then(
       function() {
-        addDoc(usersCollection, {email})
+        addDoc(usersCollection, {
+          userId: new Date().getTime(),
+          name,
+          email,
+          todos: []
+        }
+        )
         router.push({ path: '/login' })
       })
   } 
@@ -38,9 +40,23 @@
     return signInWithEmailAndPassword(auth, email, password)
     .then(
       function() {
-        router.push({ path: '/' })
+        router.push({ path: '/todos' })
       })
   } 
+
+  /*onAuthStateChanged(auth, (user) => {
+    if (user) {
+      const uid = user.uid;
+      console.log(uid)
+    } else {
+      console.log("Ошибка!")
+    }
+  });*/
+
+  /*addDoc(collection(db, "cities"), {
+  name: "Tokyo",
+  country: "Japan"
+})
 
   /*.then((userCredential) => {
     const user = userCredential.user;

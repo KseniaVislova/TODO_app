@@ -18,7 +18,7 @@ export default {
     ...mapMutations(['createTodos']),
     onSubmit() {
       this.createTodos({
-        id: parseInt(new Date),
+        id: new Date().getTime(),
         title: this.title,
         completed: false
       })

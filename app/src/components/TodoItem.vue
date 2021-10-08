@@ -79,4 +79,10 @@ export default {
   .done {
     text-decoration: line-through;
   }
+
+  @media (max-width: 767px) {
+    li {
+      padding: 0.5rem 0rem;
+    }
+  }
 </style>

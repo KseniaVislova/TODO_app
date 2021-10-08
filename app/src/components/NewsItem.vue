@@ -31,7 +31,7 @@ export default {
   .news__image {
     display: block;
     width: 100%;
-    height: 250px;
+    max-height: 250px;
     margin: 0 auto 1rem;
     background-size: cover;
     overflow: hidden;
@@ -68,5 +68,13 @@ export default {
     color: #2c3e50;
     background-color: #fff;
     box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.3), 0px 4px 50px rgba(0, 0, 0, 0.25);
+  }
+
+   @media (max-width: 768px) {
+    .news__item  {
+      width: 90%;
+      margin-bottom: 1.5rem;
+      padding: 1rem 1rem;
+    }
   }
 </style>

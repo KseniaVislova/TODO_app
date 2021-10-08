@@ -41,4 +41,21 @@ body {
   font-family: 'Pacifico', cursive;
   font-size: 3.5rem;
 }
+
+@media (max-width: 767px) {
+  #app {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .page__title {
+    font-size: 3rem;
+  }
+}
+
+@media (max-width:425px) {
+  .container {
+    padding: 1rem;
+  } 
+}
 </style>

@@ -8,16 +8,8 @@
   </li>
 </template>
 
-<!--- <li>
-    <span v-bind:class="{done:todo.completed}">
-      <input type="checkbox" v-on:change="todo.completed = !todo.completed">
-      <p>{{ todo.title }}</p>
-    </span>
-    <button v-on:click="$emit('remove-todo', todo.id)">&times;</button>
-  </li> --->
-
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations, mapActions } from 'vuex'
 
 export default {
   props: {
@@ -28,16 +20,19 @@ export default {
     index: Number
   },
   methods: {
-    ...mapMutations(['removeTodo', 'updateCompleted']),
+    ...mapActions(['changeTodo']),
+    ...mapMutations(['removeTodo']),
     remove() {
       this.removeTodo(this.todo.id)
     },
     updateStatus() {
-      this.$store.commit('updateCompleted', this.todo.id);
-      console.log(document.getElementById(this.todo.id))
-      document.getElementById(this.todo.id).classList.toggle('done')
-    }
-  }, 
+      this.changeTodo(this.todo.id)
+    },
+    created(){
+        this.fetchCompleted()
+    },
+  },
+
 }
 </script>
 

@@ -1,32 +1,32 @@
-import { todosCollection, db } from '@/firebase'
+import { todosCollection, db } from "@/firebase";
 import { getDocs, setDoc, doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
-export default ({
+export default {
   state: {
     todos: [],
     loading: true,
   },
   getters: {
     allTodos(state) {
-      return state.todos
+      return state.todos;
     },
     todosCount(state) {
-      return state.todos.filter(t => !t.completed && t.title).length;
+      return state.todos.filter((t) => !t.completed && t.title).length;
     },
     validTodos(state) {
-      return state.todos.filter(todo => {
-        return todo.title
-      })
-    }, 
-    presentLoading(state) {
+      return state.todos.filter((todo) => {
+        return todo.title;
+      });
+    },
+    todosLoading(state) {
       return state.loading
     },
     completedTodos(state) {
-      return state.todos.filter(t => t.completed && t.title)
+      return state.todos.filter((t) => t.completed && t.title);
     },
     notCompletedTodos(state) {
-      return state.todos.filter(t => !t.completed && t.title)
+      return state.todos.filter((t) => !t.completed && t.title);
     },
   },
   mutations: {
@@ -34,13 +34,13 @@ export default ({
     updateTodos(state, todos) {
       state.todos = todos;
     },
-    updateLoading(state, loading) {
+    updateTodosLoading(state, loading) {
       state.loading = loading;
     },
     //удаляем дело из списка
     removeTodo(state, id) {
-      state.todos = state.todos.filter(t => t.id !== id)
-      const docId = String(id)
+      state.todos = state.todos.filter(t => t.id !== id);
+      const docId = String(id);
       deleteDoc(doc(db, "todos", docId));
     },
     //создание нового дела
@@ -90,27 +90,39 @@ export default ({
       }
     },
     //обновляем статус выполнения дела
-    async updateCompleted(state, id) {
+    updateCompleted(state, id) {
+      console.log(state.todos)
+      state.todos.forEach(todo => {
+        if (todo.id === id) {
+          console.log(todo.completed)
+          todo.completed = !todo.completed
+        }
+        todo.completed
+      })
+      console.log(state.todos)
+    },
+
+    updateCompletedFirebase(state, id) {
       try {
         const docId = String(id)
         console.log(docId)
         const ref = doc(db, "todos", docId)
         console.log(id)
-        console.log(state.todos.id)
-        state.todos = await state.todos.map(todo => {
+        state.todos.forEach(todo => {
           console.log(id)
           if (todo.id === id) {
+            console.log(todo.id)
             updateDoc(ref, {
               completed: !todo.completed
             })
-            return todo.completed = !todo.completed
           }
         })
       } catch (error) {
         console.log(error.message)
         throw error
       }
-    },
+      console.log(state.todos)
+    }
   },
   actions: {
     async fetchTodos(ctx) {
@@ -123,13 +135,13 @@ export default ({
         querySnapshot.forEach((doc) => {  
            console.log(doc.data())
             if (user.email === doc.data().user) {
-              todos.push(doc.data())
+              todos.unshift(doc.data())
             }
         })
 
         const loading = false;
         ctx.commit('updateTodos', todos)
-        ctx.commit('updateLoading', loading)
+        ctx.commit('updateTodosLoading', loading)
       } catch (error) {
         console.log(error.message)
         throw error
@@ -138,6 +150,29 @@ export default ({
 
     updateTodo(ctx, id) {
       ctx.commit('updateTodos', id)
-    }
+    },
+
+    async changeTodo(ctx, id) {
+      ctx.commit('updateCompletedFirebase', id)
+      ctx.commit('updateCompleted', id)
+      const todos = [];
+      
+      try {
+        const querySnapshot = await getDocs(todosCollection);
+        const auth = getAuth();
+        const user = auth.currentUser;
+        querySnapshot.forEach((doc) => {  
+           console.log(doc.data())
+            if (user.email === doc.data().user) {
+              todos.unshift(doc.data())
+            }
+        })
+
+        ctx.commit('updateTodos', todos)
+      } catch (error) {
+        console.log(error.message)
+        throw error
+      }
+    },
   },
-});
+};

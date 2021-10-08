@@ -13,7 +13,7 @@ export default ({
     newsCount(state) {
       return state.news.length;
     },
-    presentLoading(state) {
+    newsLoading(state) {
       return state.loading
     },
   },
@@ -21,7 +21,7 @@ export default ({
     updateNews(state, news) {
       state.news = news;
     },
-    updateLoading(state, loading) {
+    updateNewsLoading(state, loading) {
       state.loading = loading;
     },
   },
@@ -38,7 +38,7 @@ export default ({
 
         const loading = false;
         ctx.commit('updateNews', news)
-        ctx.commit('updateLoading', loading)
+        ctx.commit('updateNewsLoading', loading)
       } catch (error) {
         console.log(error.message)
         throw error

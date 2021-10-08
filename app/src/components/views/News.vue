@@ -2,7 +2,7 @@
   <div>
     <h2 class="page__title">Новости</h2>
     <NavList />
-    <Loader class="loader" v-if="presentLoading"/>
+    <Loader class="loader" v-if="newsLoading"/>
     <NewsList 
     v-else-if="allNews.length"
     v-bind:news='allNews'
@@ -19,7 +19,7 @@ import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'news',
-  computed: mapGetters(['allNews', 'newsCount','presentLoading']),
+  computed: mapGetters(['allNews', 'newsCount', 'newsLoading']),
   methods: mapActions(['fetchNews']),
   components: {
     NewsList,

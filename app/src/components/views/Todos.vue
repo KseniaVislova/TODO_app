@@ -2,16 +2,14 @@
   <div>
     <h2 class="page__title">Список дел</h2>
     <NavList />
-    <AddTodo
-      @add-todo="addTodo"
-     />
+    <AddTodo />
      <select v-model='filter'>
        <option value="all">Все</option>
        <option value="completed">Завершенные</option>
        <option value="not-completed">Не завершенные</option>
      </select>
      <p>Осталось выполнить {{ todosCount }} задач:</p>
-    <Loader class="loader" v-if="presentLoading"/>
+    <Loader class="loader" v-if="todosLoading"/>
     <TodoList
       v-else-if="filteredTodos.length"
       v-bind:todos="filteredTodos"
@@ -32,10 +30,10 @@ export default {
   name: 'todos',
   data() {
     return {
-      filter: 'all'
+      filter: 'all',
     }
   },
-  computed: {...mapGetters(['todosCount', 'presentLoading']),
+  computed: {...mapGetters(['todosCount', 'todosLoading']),
   filteredTodos() {
   if (this.filter === 'completed') {
     return this.$store.getters.completedTodos
@@ -59,14 +57,6 @@ export default {
   async mounted() {
     this.fetchTodos();
   },
- /* methods: {
-    removeTodo(id) {
-      this.todos = this.todos.filter(t => t.id !== id)
-    },
-    addTodo(todo) {
-      this.todos.push(todo)
-    }
-  }*/
 }
 </script>
 

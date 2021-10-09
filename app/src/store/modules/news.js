@@ -1,6 +1,10 @@
+import { newsCollection } from '@/firebase'
+import { getDocs } from "firebase/firestore";
+
 export default ({
   state: {
     news: [],
+    loading: true,
   },
   getters: {
     allNews(state) {
@@ -8,19 +12,37 @@ export default ({
     },
     newsCount(state) {
       return state.news.length;
-    }
+    },
+    newsLoading(state) {
+      return state.loading
+    },
   },
   mutations: {
     updateNews(state, news) {
       state.news = news;
-    }
+    },
+    updateNewsLoading(state, loading) {
+      state.loading = loading;
+    },
   },
   actions: {
     async fetchNews(ctx) {
-      const res = await fetch('https://newsapi.org/v2/everything?q=tesla&from=2021-09-01&sortBy=publishedAt&apiKey=653d985befbc4b80bc2fb9eddb79b870');
-      const news = await res.json();
+      const news = [];
+      
+      try {
+        const querySnapshot = await getDocs(newsCollection);
 
-      ctx.commit('updateNews', news.articles)
+        querySnapshot.forEach((doc) => {
+            news.push(doc.data())
+        })
+
+        const loading = false;
+        ctx.commit('updateNews', news)
+        ctx.commit('updateNewsLoading', loading)
+      } catch (error) {
+        console.log(error.message)
+        throw error
+      }
     }
   },
-});
+})

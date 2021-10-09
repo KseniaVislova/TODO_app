@@ -1,6 +1,6 @@
 <template>
   <li>
-    <span :class="{done:todo.completed}">
+    <span :class="{done:todo.completed}" :id="todo.id">
       <input type="checkbox" :checked="todo.completed" @change="updateStatus">
       <p>{{ todo.title }}</p>
     </span>
@@ -8,16 +8,8 @@
   </li>
 </template>
 
-<!--- <li>
-    <span v-bind:class="{done:todo.completed}">
-      <input type="checkbox" v-on:change="todo.completed = !todo.completed">
-      <p>{{ todo.title }}</p>
-    </span>
-    <button v-on:click="$emit('remove-todo', todo.id)">&times;</button>
-  </li> --->
-
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations, mapActions } from 'vuex'
 
 export default {
   props: {
@@ -28,14 +20,19 @@ export default {
     index: Number
   },
   methods: {
-    ...mapMutations(['removeTodo', 'updateCompleted']),
+    ...mapActions(['changeTodo']),
+    ...mapMutations(['removeTodo']),
     remove() {
       this.removeTodo(this.todo.id)
     },
     updateStatus() {
-      this.$store.commit('updateCompleted', this.todo.id);
-    }
-  }
+      this.changeTodo(this.todo.id)
+    },
+    created(){
+        this.fetchCompleted()
+    },
+  },
+
 }
 </script>
 
@@ -81,5 +78,11 @@ export default {
 
   .done {
     text-decoration: line-through;
+  }
+
+  @media (max-width: 767px) {
+    li {
+      padding: 0.5rem 0rem;
+    }
   }
 </style>

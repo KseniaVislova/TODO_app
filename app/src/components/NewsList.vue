@@ -31,4 +31,10 @@ export default {
     list-style: none;
     padding: 0;
   }
+
+  @media (max-width: 768px) {
+    ul {
+      flex-direction: column;
+    }
+  }
 </style>

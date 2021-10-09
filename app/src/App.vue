@@ -2,14 +2,13 @@
   <div id="app">
     <div class="container">
       <router-view />
-    </div>    
+    </div>
   </div>
 </template>
 
-
-<style>  
-@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap');
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Pacifico&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap");
 
 body {
   margin: 0;
@@ -22,7 +21,7 @@ body {
   margin: 0 auto;
   padding-top: 2rem;
   padding-bottom: 2rem;
-  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+  font-family: Montserrat, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: linear-gradient(118.54deg, #7363d8 1.88%, #9eabdc 100.7%);
@@ -38,7 +37,24 @@ body {
 .page__title {
   margin-top: 0;
   margin-bottom: 0.5rem;
-  font-family: 'Pacifico', cursive;
+  font-family: Pacifico, cursive;
   font-size: 3.5rem;
+}
+
+@media (max-width: 767px) {
+  #app {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .page__title {
+    font-size: 3rem;
+  }
+}
+
+@media (max-width: 425px) {
+  .container {
+    padding: 1rem;
+  }
 }
 </style>

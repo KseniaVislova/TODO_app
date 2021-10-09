@@ -1,4 +1,5 @@
 <template>
+<div class="wrapper">
   <div class="lds-grid">
     <div></div>
     <div></div>
@@ -7,9 +8,16 @@
     <div></div>
     <div></div>
   </div>
+</div>
 </template>
 
 <style scoped>
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .lds-grid {
   display: inline-block;
   position: relative;

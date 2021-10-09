@@ -5,6 +5,6 @@ import todos from "./modules/todos";
 export default createStore({
   modules: {
     news,
-    todos
+    todos,
   },
 });

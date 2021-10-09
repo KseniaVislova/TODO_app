@@ -1,126 +1,134 @@
 <template>
-    <div class="wrapper"> 
-      <form class="form" @submit.prevent="onSubmit">
-        <div class="form__content">
-          <h3 class="form__title">Регистрация</h3>
-          <div class="input-field">
-            <small class="invalid"
-            v-for="(error, index) of v$.form.email.$errors" :key="index"
-            >Введите email</small>
-            <input
-                id="email"
-                type="text"
-                v-model="v$.form.email.$model"
-                :class="{ invalid: v$.form.email.$errors.length }"
-            >
-            <label for="email">Email</label>
-          </div>
-          <div class="input-field">
-            <small class="invalid"
-            v-for="(error, index) of v$.form.password.$errors" :key="index"
-            >Введите корректный пароль</small>
-            <input
-                id="password"
-                type="password"
-                :class="{ invalid: v$.form.password.$errors.length }"
-                v-model="v$.form.password.$model"
-            >
-            <label for="password">Пароль</label>
-          </div>
-          <div class="input-field">
-            <small class="helper-text invalid"
-            v-for="(error, index) of v$.form.name.$errors" :key="index"
-            >Введите свое имя</small>
-            <input
-                id="name"
-                type="text"
-                :class="{ invalid: v$.form.name.$errors.length }"
-                v-model="v$.form.name.$model"
-            >
-            <label for="name">Имя</label>
-          </div>
-          <p>
-            <label>
-              <input type="checkbox" />
-              <span>С правилами согласен</span>
-            </label>
-          </p>
+  <div class="wrapper">
+    <form class="form" @submit.prevent="onSubmit">
+      <div class="form__content">
+        <h3 class="form__title">Регистрация</h3>
+        <div class="input-field">
+          <small
+            class="invalid"
+            v-for="(error, index) of v$.form.email.$errors"
+            :key="index"
+            >Введите email</small
+          >
+          <input
+            id="email"
+            type="text"
+            v-model="v$.form.email.$model"
+            :class="{ invalid: v$.form.email.$errors.length }"
+          />
+          <label for="email">Email</label>
         </div>
-        <div class="form__action">
-            <button
-                type="submit"
-                :disabled="v$.form.$invalid"
-            >
-              Зарегистрироваться
-            </button>
-          <p>
-            Уже есть аккаунт?
-            <router-link to="/login">Войти!</router-link>
-          </p>
+        <div class="input-field">
+          <small
+            class="invalid"
+            v-for="(error, index) of v$.form.password.$errors"
+            :key="index"
+            >Введите корректный пароль</small
+          >
+          <input
+            id="password"
+            type="password"
+            :class="{ invalid: v$.form.password.$errors.length }"
+            v-model="v$.form.password.$model"
+          />
+          <label for="password">Пароль</label>
         </div>
-      </form>
-    </div>
+        <div class="input-field">
+          <small
+            class="helper-text invalid"
+            v-for="(error, index) of v$.form.name.$errors"
+            :key="index"
+            >Введите свое имя</small
+          >
+          <input
+            id="name"
+            type="text"
+            :class="{ invalid: v$.form.name.$errors.length }"
+            v-model="v$.form.name.$model"
+          />
+          <label for="name">Имя</label>
+        </div>
+        <p>
+          <label>
+            <input type="checkbox" />
+            <span>С правилами согласен</span>
+          </label>
+        </p>
+      </div>
+      <div class="form__action">
+        <button type="submit" :disabled="v$.form.$invalid">
+          Зарегистрироваться
+        </button>
+        <p>
+          Уже есть аккаунт?
+          <router-link to="/login">Войти!</router-link>
+        </p>
+      </div>
+    </form>
+  </div>
 </template>
 
 <script>
-import useVuelidate from '@vuelidate/core'
-import { required, email, minLength } from '@vuelidate/validators'
-import { createUser } from '@/firebase'
+import useVuelidate from "@vuelidate/core";
+import { required, email, minLength } from "@vuelidate/validators";
+import { createUser } from "@/firebase";
 import router from "@/router";
 
 export default {
   data() {
     return {
       form: {
-        email: '',
-        password: '',
-        name: '',
+        email: "",
+        password: "",
+        name: "",
       },
-    }
+    };
   },
-  setup () {
-    return { v$: useVuelidate() }
+  setup() {
+    return { v$: useVuelidate() };
   },
   methods: {
     onSubmit() {
-        router.push({ path: '/login' })
-      createUser(this.form.email, this.form.password, this.form.name)
-      .then(function() {
-        alert('Your account has been created')
+      router.push({ path: "/login" });
+      createUser(this.form.email, this.form.password, this.form.name).then(
+        function () {
+          alert("Your account has been created");
         },
-        function(error) {
+        function (error) {
           var errorCode = error.code;
           var errorMessage = error.message;
-          if (errorCode == 'auth/weak-password') {
-            alert('The password is too weak.');
+          if (errorCode == "auth/weak-password") {
+            alert("The password is too weak.");
           } else {
             alert(errorMessage);
           }
           console.log(error);
-        });
-      this.form.email = ''
-      this.form.password = ''
-      this.form.name = '' 
-    }
+        }
+      );
+      this.form.email = "";
+      this.form.password = "";
+      this.form.name = "";
+    },
   },
   validations() {
     return {
       form: {
         email: {
-           required, email 
+          required,
+          email,
         },
         password: {
-            required, 
-            min: minLength(6)
+          required,
+          min: minLength(6),
         },
         name: {
-            required, 
-            min: minLength(2)
+          required,
+          min: minLength(2),
         },
       },
-    }
+    };
   },
-}
+};
 </script>
 
 <style scoped>
@@ -183,5 +191,4 @@ button {
   font-size: 0.5rem;
   color: red;
 }
-
 </style>

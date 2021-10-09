@@ -75,53 +75,42 @@ export default {
         }
       };
 
-    
       const docId = String(newTodo.id)
-      console.log(docId)
       const ref = doc(db, "todos", docId).withConverter(todoConverter);
-      console.log(ref)
 
       try{
         state.todos.unshift(newTodo)
         await setDoc(ref, new Todo(newTodo.id, newTodo.title, newTodo.completed, user.email));
       } catch (error) {
-        console.log(error.message)
+        console.log(error);
         throw error
       }
     },
     //обновляем статус выполнения дела
     updateCompleted(state, id) {
-      console.log(state.todos)
       state.todos.forEach(todo => {
         if (todo.id === id) {
-          console.log(todo.completed)
           todo.completed = !todo.completed
         }
         todo.completed
       })
-      console.log(state.todos)
     },
 
     updateCompletedFirebase(state, id) {
       try {
         const docId = String(id)
-        console.log(docId)
         const ref = doc(db, "todos", docId)
-        console.log(id)
         state.todos.forEach(todo => {
-          console.log(id)
           if (todo.id === id) {
-            console.log(todo.id)
             updateDoc(ref, {
               completed: !todo.completed
             })
           }
         })
       } catch (error) {
-        console.log(error.message)
+        console.log(error);
         throw error
       }
-      console.log(state.todos)
     }
   },
   actions: {
@@ -133,7 +122,6 @@ export default {
         const auth = getAuth();
         const user = auth.currentUser;
         querySnapshot.forEach((doc) => {  
-           console.log(doc.data())
             if (user.email === doc.data().user) {
               todos.unshift(doc.data())
             }
@@ -143,7 +131,7 @@ export default {
         ctx.commit('updateTodos', todos)
         ctx.commit('updateTodosLoading', loading)
       } catch (error) {
-        console.log(error.message)
+        console.log(error);
         throw error
       }
     },
@@ -162,7 +150,6 @@ export default {
         const auth = getAuth();
         const user = auth.currentUser;
         querySnapshot.forEach((doc) => {  
-           console.log(doc.data())
             if (user.email === doc.data().user) {
               todos.unshift(doc.data())
             }
@@ -170,7 +157,7 @@ export default {
 
         ctx.commit('updateTodos', todos)
       } catch (error) {
-        console.log(error.message)
+        console.log(error);
         throw error
       }
     },

@@ -1,20 +1,20 @@
-import { newsCollection } from '@/firebase'
+import { newsCollection } from "@/firebase";
 import { getDocs } from "firebase/firestore";
 
-export default ({
+export default {
   state: {
     news: [],
     loading: true,
   },
   getters: {
     allNews(state) {
-      return state.news
+      return state.news;
     },
     newsCount(state) {
       return state.news.length;
     },
     newsLoading(state) {
-      return state.loading
+      return state.loading;
     },
   },
   mutations: {
@@ -28,21 +28,21 @@ export default ({
   actions: {
     async fetchNews(ctx) {
       const news = [];
-      
+
       try {
         const querySnapshot = await getDocs(newsCollection);
 
         querySnapshot.forEach((doc) => {
-            news.push(doc.data())
-        })
+          news.push(doc.data());
+        });
 
         const loading = false;
-        ctx.commit('updateNews', news)
-        ctx.commit('updateNewsLoading', loading)
+        ctx.commit("updateNews", news);
+        ctx.commit("updateNewsLoading", loading);
       } catch (error) {
-        console.log(error.message)
-        throw error
+        console.log(error.message);
+        throw error;
       }
-    }
+    },
   },
-})
+};

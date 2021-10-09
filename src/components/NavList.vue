@@ -10,20 +10,20 @@
       <router-link class="page__tab" to="/todos">Дела</router-link>
     </nav>
     <div class="user">
-      <button class="page__tab" @click.prevent="openDropdown">
-        Профиль
-      </button>
-      <ul id='dropdown' class='dropdown-content'>
-          <li>
-            <router-link class="dropdown__link" to="/registration">Регистрация</router-link>
-          </li>
-          <li>
-            <router-link class="dropdown__link" to="/login">Войти</router-link>
-          </li>
-          <li>
-            <a href="#" class="dropdown__link" @click.prevent="logOut">Выйти</a>
-          </li>
-        </ul>
+      <button class="page__tab" @click.prevent="openDropdown">Профиль</button>
+      <ul id="dropdown" class="dropdown-content">
+        <li>
+          <router-link class="dropdown__link" to="/registration"
+            >Регистрация</router-link
+          >
+        </li>
+        <li>
+          <router-link class="dropdown__link" to="/login">Войти</router-link>
+        </li>
+        <li>
+          <a href="#" class="dropdown__link" @click.prevent="logOut">Выйти</a>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -37,23 +37,27 @@ export default {
     dropdown: null,
   }),
   methods: {
-    logOut () {
+    logOut() {
       const auth = getAuth();
-      signOut(auth).then(() => {
-        alert('Вы успешно вышли из аккаунта')
-      }).catch((error) => {
-        alert(error.message)
-      });
-      this.$router.push('./login')
+      signOut(auth)
+        .then(() => {
+          alert("Вы успешно вышли из аккаунта");
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
+      this.$router.push("./login");
     },
     openDropdown() {
-      document.getElementById('dropdown').classList.toggle(`visible`)
+      document.getElementById("dropdown").classList.toggle(`visible`);
     },
     openNav() {
-      document.getElementById('nav__list-mobile').classList.toggle(`visible-nav`)
-    }
+      document
+        .getElementById("nav__list-mobile")
+        .classList.toggle(`visible-nav`);
+    },
   },
-}
+};
 </script>
 
 <style scoped>
@@ -134,14 +138,14 @@ export default {
   border: none;
 }
 
-.burger-mobile span{
+.burger-mobile span {
   display: block;
   width: 100%;
   height: 0.3rem;
   background-color: #222;
 }
 
-@media (max-width: 767px)  {
+@media (max-width: 767px) {
   .burger-mobile {
     display: flex;
   }
@@ -165,13 +169,14 @@ export default {
   }
 
   .visible-nav {
-    position: absolute;  
-    display: flex;  
+    position: absolute;
+    display: flex;
     top: 4rem;
     padding: 1rem 2rem;
     background-color: rgb(220, 226, 245);
     border-radius: 10px;
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.3), 0px 4px 50px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.3),
+      0px 4px 50px rgba(0, 0, 0, 0.25);
   }
 
   .visible-nav .page__tab {
@@ -185,5 +190,4 @@ export default {
     box-shadow: none;
   }
 }
-
 </style>

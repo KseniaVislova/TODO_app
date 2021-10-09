@@ -1,101 +1,104 @@
 <template>
-<div class="wrapper">
-  <form class="form" @submit.prevent="onSubmit">
-    <div class="form__content">
-      <h3 class="form__title">Войти в аккаунт</h3>
-      <div class="input-field">
-        <small class="invalid"
-        v-for="(error, index) of v$.form.email.$errors" :key="index"
-        >Email</small>
-        <input
+  <div class="wrapper">
+    <form class="form" @submit.prevent="onSubmit">
+      <div class="form__content">
+        <h3 class="form__title">Войти в аккаунт</h3>
+        <div class="input-field">
+          <small
+            class="invalid"
+            v-for="(error, index) of v$.form.email.$errors"
+            :key="index"
+            >Email</small
+          >
+          <input
             id="email"
             type="text"
             v-model="v$.form.email.$model"
             :class="{ invalid: v$.form.email.$errors.length }"
-        >
-        <label for="email">Email</label>
-      </div>
-      <div class="input-field">
-        <small class="invalid"
-        v-for="(error, index) of v$.form.password.$errors" :key="index"
-        >Password</small>
-        <input
+          />
+          <label for="email">Email</label>
+        </div>
+        <div class="input-field">
+          <small
+            class="invalid"
+            v-for="(error, index) of v$.form.password.$errors"
+            :key="index"
+            >Password</small
+          >
+          <input
             id="password"
             type="password"
             :class="{ invalid: v$.form.password.$errors.length }"
             v-model="v$.form.password.$model"
-        >
-        <label for="password">Пароль</label>
+          />
+          <label for="password">Пароль</label>
+        </div>
       </div>
-    </div>
-    <div class="form__action">
-        <button
-            type="submit"
-            :disabled="v$.form.$invalid"
-        >
-          Войти
-        </button>
-      <p>
-        Нет аккаунта?
-        <router-link to="/registration">Зарегистрироваться</router-link>
-      </p>
-    </div>
-  </form>
-</div>
+      <div class="form__action">
+        <button type="submit" :disabled="v$.form.$invalid">Войти</button>
+        <p>
+          Нет аккаунта?
+          <router-link to="/registration">Зарегистрироваться</router-link>
+        </p>
+      </div>
+    </form>
+  </div>
 </template>
 
 <script>
-import useVuelidate from '@vuelidate/core'
-import { required, email, minLength } from '@vuelidate/validators'
-import { signIn } from '@/firebase'
+import useVuelidate from "@vuelidate/core";
+import { required, email, minLength } from "@vuelidate/validators";
+import { signIn } from "@/firebase";
 
 export default {
-  setup () {
-    return { v$: useVuelidate() }
+  setup() {
+    return { v$: useVuelidate() };
   },
   data() {
     return {
       form: {
-        email: '',
-        password: '',
+        email: "",
+        password: "",
       },
-    }
+    };
   },
   methods: {
     onSubmit() {
-      signIn(this.form.email, this.form.password)
-      .then(function() {
-        alert('Вы успешно вошли в аккаунт')
+      signIn(this.form.email, this.form.password).then(
+        function () {
+          alert("Вы успешно вошли в аккаунт");
         },
-        function(error) {
+        function (error) {
           var errorCode = error.code;
           var errorMessage = error.message;
-          if (errorCode == 'auth/weak-password') {
-            alert('Неверный пароль');
+          if (errorCode == "auth/weak-password") {
+            alert("Неверный пароль");
           } else {
             alert(errorMessage);
           }
           console.log(error);
-        });
-      this.form.email = ''
-      this.form.password = ''
-      this.form.name = '' 
-    }
+        }
+      );
+      this.form.email = "";
+      this.form.password = "";
+      this.form.name = "";
+    },
   },
   validations() {
     return {
       form: {
         email: {
-           required, email 
+          required,
+          email,
         },
         password: {
-            required, 
-            min: minLength(6)
+          required,
+          min: minLength(6),
         },
       },
-    }
+    };
   },
-}
+};
 </script>
 
 <style scoped>
@@ -158,5 +161,4 @@ button {
   font-size: 0.5rem;
   color: red;
 }
-
 </style>

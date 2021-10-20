@@ -12,15 +12,15 @@
     <div class="user">
       <button class="page__tab" @click.prevent="openDropdown">Профиль</button>
       <ul id="dropdown" class="dropdown-content">
-        <li>
+        <li v-if="!auth">
           <router-link class="dropdown__link" to="/registration"
             >Регистрация</router-link
           >
         </li>
-        <li>
+        <li v-if="!auth">
           <router-link class="dropdown__link" to="/login">Войти</router-link>
         </li>
-        <li>
+        <li v-if="auth">
           <a href="#" class="dropdown__link" @click.prevent="logOut">Выйти</a>
         </li>
       </ul>
@@ -35,17 +35,17 @@ export default {
   data: () => ({
     userInfo: null,
     dropdown: null,
+    auth: Boolean(getAuth().currentUser),
   }),
   methods: {
-    logOut() {
+    async logOut() {
       const auth = getAuth();
-      signOut(auth)
-        .then(() => {
-          alert("Вы успешно вышли из аккаунта");
-        })
-        .catch((error) => {
-          alert(error.message);
-        });
+      try {
+        await signOut(auth);
+        alert("Вы успешно вышли из аккаунта");
+      } catch (error) {
+        alert(error.message);
+      }
       this.$router.push("./login");
     },
     openDropdown() {

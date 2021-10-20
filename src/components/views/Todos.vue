@@ -38,7 +38,7 @@ export default {
       if (this.filter === "not-completed") {
         return this.$store.getters.notCompletedTodos;
       }
-      return this.$store.getters.validTodos;
+      return this.$store.getters.allTodos;
     },
   },
   methods: mapActions(["fetchTodos"]),

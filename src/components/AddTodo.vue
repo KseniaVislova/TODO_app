@@ -17,11 +17,13 @@ export default {
   methods: {
     ...mapMutations(["createTodos"]),
     onSubmit() {
-      this.createTodos({
-        id: new Date().getTime(),
-        title: this.title,
-        completed: false,
-      });
+      if (this.title) {
+        this.createTodos({
+          id: new Date().getTime(),
+          title: this.title,
+          completed: false,
+        });
+      }
       this.title = "";
     },
   },

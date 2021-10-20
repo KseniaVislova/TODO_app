@@ -88,23 +88,21 @@ export default {
     return { v$: useVuelidate() };
   },
   methods: {
-    onSubmit() {
+    async onSubmit() {
       router.push({ path: "/login" });
-      createUser(this.form.email, this.form.password, this.form.name).then(
-        function () {
-          alert("Your account has been created");
-        },
-        function (error) {
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          if (errorCode == "auth/weak-password") {
-            alert("The password is too weak.");
-          } else {
-            alert(errorMessage);
-          }
-          console.log(error);
+      try {
+        await createUser(this.form.email, this.form.password, this.form.name);
+        alert("Your account has been created");
+      } catch (error) {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        if (errorCode == "auth/weak-password") {
+          alert("The password is too weak.");
+        } else {
+          alert(errorMessage);
         }
-      );
+        console.log(error);
+      }
       this.form.email = "";
       this.form.password = "";
       this.form.name = "";

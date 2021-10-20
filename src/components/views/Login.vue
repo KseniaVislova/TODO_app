@@ -63,22 +63,20 @@ export default {
     };
   },
   methods: {
-    onSubmit() {
-      signIn(this.form.email, this.form.password).then(
-        function () {
-          alert("Вы успешно вошли в аккаунт");
-        },
-        function (error) {
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          if (errorCode == "auth/weak-password") {
-            alert("Неверный пароль");
-          } else {
-            alert(errorMessage);
-          }
-          console.log(error);
+    async onSubmit() {
+      try {
+        await signIn(this.form.email, this.form.password);
+        alert("Вы успешно вошли в аккаунт");
+      } catch (error) {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        if (errorCode == "auth/weak-password") {
+          alert("Неверный пароль");
+        } else {
+          alert(errorMessage);
         }
-      );
+        console.log(error);
+      }
       this.form.email = "";
       this.form.password = "";
       this.form.name = "";
